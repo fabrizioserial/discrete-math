@@ -37,9 +37,6 @@ public class AdjacencyMatrixGraphImpl<T> implements Graph<T> {
         n--;
     }
 
-    // Agrego una arista a partir de 2 vertices. Primero verifico que este exista con hasVertex()
-    // Debido a ese metodo, no es necesario controlar que el index sea -1.
-    // Si no existe tiro una excepcion de argumento
 
     @Override
     public void addEdge(T v, T w) {
@@ -60,9 +57,6 @@ public class AdjacencyMatrixGraphImpl<T> implements Graph<T> {
             }
             mapW_Content.put(v_index,true);
             A.put(w_index,mapW_Content);
-
-            System.out.println(v_index);
-            System.out.println(w_index);
 
             alpha++;
         }
@@ -120,7 +114,7 @@ public class AdjacencyMatrixGraphImpl<T> implements Graph<T> {
     @Override
     public List<T> getAdjacencyList(T v) {
         ArrayList<T> arrayListToReturn = new ArrayList<>();
-        if(alpha != 0){
+        if(alpha != 0 && A.containsKey(getVertexIndex(v))){
             ArrayList<T> arrayListAux = new ArrayList<T>((Collection<? extends T>) A.get(getVertexIndex(v)).keySet());
             for (int i = 0; i < V.size(); i++) {
                 if(arrayListAux.contains(i)){
