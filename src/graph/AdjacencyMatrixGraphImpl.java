@@ -120,12 +120,15 @@ public class AdjacencyMatrixGraphImpl<T> implements Graph<T> {
     @Override
     public List<T> getAdjacencyList(T v) {
         ArrayList<T> arrayListToReturn = new ArrayList<>();
-        ArrayList<T> arrayListAux = new ArrayList<T>((Collection<? extends T>) A.get(getVertexIndex(v)).keySet());
-        for (int i = 0; i < V.size(); i++) {
-            if(arrayListAux.contains(i)){
-                arrayListToReturn.add(V.get(i));
+        if(alpha != 0){
+            ArrayList<T> arrayListAux = new ArrayList<T>((Collection<? extends T>) A.get(getVertexIndex(v)).keySet());
+            for (int i = 0; i < V.size(); i++) {
+                if(arrayListAux.contains(i)){
+                    arrayListToReturn.add(V.get(i));
+                }
             }
         }
+
         return arrayListToReturn;
     }
 }
