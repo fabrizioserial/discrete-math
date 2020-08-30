@@ -39,6 +39,8 @@ public class Tp1Impl<T> implements Tp1<T> {
             }
             System.out.println("No edges");
         }
+
+        //Orden n^2
     }
 
     @Override
@@ -69,6 +71,7 @@ public class Tp1Impl<T> implements Tp1<T> {
             }
         }
         return cant;
+        // Orden n
     }
 
     @Override
