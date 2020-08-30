@@ -39,6 +39,8 @@ public class Tp1Impl<T> implements Tp1<T> {
             }
             System.out.println("No edges");
         }
+
+        //Orden n^2
     }
 
     @Override
@@ -60,16 +62,16 @@ public class Tp1Impl<T> implements Tp1<T> {
     public int exercise_e(Graph<T> graph) {
         ArrayList<T> vertexList = (ArrayList<T>) graph.getVertexes();
         int cant = 0;
-        for (T t : vertexList) {
-            if (t != null) {
-                ArrayList<T> edgeOfAnVertex = (ArrayList<T>) graph.getAdjacencyList(t);
+        for (int i = 0; i < graph.order(); i++) {
+            if (vertexList.get(i) != null) {
+                ArrayList<T> edgeOfAnVertex = (ArrayList<T>) graph.getAdjacencyList(vertexList.get(i));
                 if (edgeOfAnVertex.size() == 0){
                     cant++;
                 }
             }
-
         }
         return cant;
+        // Orden n
     }
 
     @Override
