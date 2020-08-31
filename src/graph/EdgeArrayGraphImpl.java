@@ -3,7 +3,7 @@ package graph;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: implement
+
 public class EdgeArrayGraphImpl<T> implements Graph<T> {
 
     private final ArrayList<T> vertex= new ArrayList<>();
@@ -31,8 +31,7 @@ public class EdgeArrayGraphImpl<T> implements Graph<T> {
         else{
             vertex.remove(x);
             n--;
-            edgeArray.removeIf(node -> node[0].equals(x));
-            edgeArray.removeIf(node -> node[1].equals(x));
+            edgeArray.removeIf(node -> node[0].equals(x)||node[1].equals(x));
         }
     }
 

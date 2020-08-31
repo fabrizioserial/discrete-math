@@ -56,6 +56,8 @@ public class Tp1Impl<T> implements Tp1<T> {
             if(graph.hasEdge(element,element)) sameEdge.add(element);
         }
         return sameEdge;
+
+        //Orden n^2
     }
 
     @Override
@@ -118,6 +120,7 @@ public class Tp1Impl<T> implements Tp1<T> {
             incidentMatrix [vertex.indexOf(adjacency.get(i).get(1))][i]=1;
         }
         return incidentMatrix;
+        //Orden n^3
         //La matriz de incidencia armada no coincide con la del test porque las columnas quedan rotadas
     }
 }
