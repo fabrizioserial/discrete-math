@@ -50,7 +50,14 @@ public class Tp1Impl<T> implements Tp1<T> {
 
     @Override
     public List<T> exercise_c(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        ArrayList<T> sameEdge=new ArrayList<>();
+        ArrayList<T> vertex= (ArrayList<T>) graph.getVertexes();
+        for (T element:vertex) {
+            if(graph.hasEdge(element,element)) sameEdge.add(element);
+        }
+        return sameEdge;
+
+        //Orden n^2
     }
 
     @Override
@@ -91,6 +98,29 @@ public class Tp1Impl<T> implements Tp1<T> {
 
     @Override
     public int[][] exercise_i(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        int[][] incidentMatrix= new int[graph.order()][graph.alpha()];
+        ArrayList<T> vertex= (ArrayList<T>) graph.getVertexes();
+        ArrayList<ArrayList<T>> adjacency=new ArrayList<>();
+        for (T element:vertex) {
+            for (T connectedVertex:graph.getAdjacencyList(element)) {
+                ArrayList<T> connection=new ArrayList<>();
+                connection.add(element);
+                connection.add(connectedVertex);
+                boolean condition=true;
+                for (ArrayList<T> countedConnections:adjacency) {
+                    if(countedConnections.containsAll(connection)) condition=false;
+                }
+                if(condition) adjacency.add(connection);
+            }
+        }
+        for (int i = 0; i < adjacency.size(); i++) {
+            int a=vertex.indexOf(adjacency.get(i).get(0));
+            int b=vertex.indexOf(adjacency.get(i).get(1));
+            incidentMatrix [vertex.indexOf(adjacency.get(i).get(0))][i]=1;
+            incidentMatrix [vertex.indexOf(adjacency.get(i).get(1))][i]=1;
+        }
+        return incidentMatrix;
+        //Orden n^3
+        //La matriz de incidencia armada no coincide con la del test porque las columnas quedan rotadas
     }
 }
