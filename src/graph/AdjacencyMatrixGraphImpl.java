@@ -5,13 +5,14 @@ import java.util.*;
 // TODO: implement
 public class AdjacencyMatrixGraphImpl<T> implements Graph<T> {
 
-    private ArrayList<T> V;
+    private HashMap<T,Boolean> V;
     private HashMap<Integer,HashMap<Integer,Boolean>> A;
     private int n;
     private int alpha;
 
+
     public AdjacencyMatrixGraphImpl(){
-        this.V = new ArrayList<>();
+        this.V = new HashMap<>();
         this.A = new HashMap<>();
         this.n=0;
         this.alpha =0;
@@ -20,18 +21,19 @@ public class AdjacencyMatrixGraphImpl<T> implements Graph<T> {
 
     @Override
     public void addVertex(T x) {
-        V.add(n,x);
+        V.put(x,true);
         n++;
     }
 
+
     @Override
     public boolean hasVertex(T v) {
-        return V.contains(v);
+        return V.get(v);
     }
 
     @Override
     public void removeVertex(T x) {
-        if(V.contains(x)){
+        if(V.containsKey(x)){
             V.remove(x);
         }
         n--;
@@ -40,10 +42,16 @@ public class AdjacencyMatrixGraphImpl<T> implements Graph<T> {
 
     @Override
     public void addEdge(T v, T w) {
-        if(hasVertex(v) && hasVertex(w)){
+
+        if(!V.containsKey(v) || !V.containsKey(w)){
+            if(!V.containsKey(v)){
+                V.put(v,false);
+            }else{
+                V.put(w,false);
+            }
+        }else if(hasVertex(v) && hasVertex(w) && V.get(v) && V.get(w)){
             int v_index = getVertexIndex(v);
             int w_index = getVertexIndex(w);
-
             HashMap<Integer,Boolean> mapV_Content = new HashMap<>();
             if(A.containsKey(v_index)){
                 mapV_Content.putAll(A.get(v_index));
@@ -79,8 +87,9 @@ public class AdjacencyMatrixGraphImpl<T> implements Graph<T> {
     }
 
     private int getVertexIndex(T v){
+        ArrayList<T> list = new ArrayList<>(V.keySet());
         for (int i = 0; i < V.size(); i++) {
-            if (V.get(i).equals(v)) return i;
+            if (list.get(i).equals(v)) return i;
         }
         return -1;
     }
@@ -108,17 +117,18 @@ public class AdjacencyMatrixGraphImpl<T> implements Graph<T> {
 
     @Override
     public List<T> getVertexes() {
-        return V;
+        return new ArrayList<>(V.keySet());
     }
 
     @Override
     public List<T> getAdjacencyList(T v) {
         ArrayList<T> arrayListToReturn = new ArrayList<>();
+        ArrayList<T> arrayList = new ArrayList<>(V.keySet());
         if(alpha != 0 && A.containsKey(getVertexIndex(v))){
             ArrayList<T> arrayListAux = new ArrayList<T>((Collection<? extends T>) A.get(getVertexIndex(v)).keySet());
             for (int i = 0; i < V.size(); i++) {
                 if(arrayListAux.contains(i)){
-                    arrayListToReturn.add(V.get(i));
+                    arrayListToReturn.add(arrayList.get(i));
                 }
             }
         }

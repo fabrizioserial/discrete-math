@@ -5,7 +5,7 @@ import graph.Graph;
 import java.util.List;
 import java.util.Map;
 
-interface Tp2<T> {
+public interface Tp2<T> {
 //    Part 0
 //    i) Depth first search
 //   ii) Breadth first search
