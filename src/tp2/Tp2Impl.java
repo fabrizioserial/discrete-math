@@ -2,14 +2,38 @@ package tp2;
 
 import graph.Graph;
 
-import javax.print.attribute.standard.QueuedJobCount;
 import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class Tp2Impl<T> implements Tp2<T> {
     @Override
     public List<T> depth_first_search(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        return dfs(graph,graph.getVertexes().get(0));
+    }
+
+    private List<T> dfs(Graph<T> graph, T v){
+        HashMap<T,Boolean> visited=new HashMap<>();
+        for (T vertex: graph.getVertexes()) {
+            visited.put(vertex,false);
+        }
+        Stack<T> stack = new Stack<>();
+        stack.push(v);
+        while (visited.containsValue(Boolean.FALSE)){
+            T vertex=null;
+            if(stack.isEmpty()) {
+                for (T value : visited.keySet()) {
+                    if (!visited.get(value)){
+                        vertex = value;
+                        break;
+                    }
+                }
+            }
+            else vertex= stack.pop();
+            visited.replace(vertex,Boolean.TRUE);
+            for (T adj: graph.getAdjacencyList(vertex)) {
+                if(!visited.get(adj)&&!stack.contains(adj)) stack.push(adj);
+            }
+        }
+        return new ArrayList<>(visited.keySet());
     }
 
     @Override
@@ -47,7 +71,16 @@ public class Tp2Impl<T> implements Tp2<T> {
 
     @Override
     public boolean exercise_c(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        for (T vertex: graph.getVertexes()) {
+            ArrayList<T> initialPath = new ArrayList<>();
+            initialPath.add(vertex);
+            ArrayList<ArrayList<T>> listOfPaths= new ArrayList<>();
+            possiblePaths(graph,vertex,initialPath,listOfPaths);
+            for (ArrayList<T> path:listOfPaths) {
+                if(path.size() > 3) return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -67,12 +100,71 @@ public class Tp2Impl<T> implements Tp2<T> {
 
     @Override
     public List<T> exercise_g(Graph<T> graph, T v, T w) {
-        throw new UnsupportedOperationException("TODO");
+        ArrayList<ArrayList<T>> listOfPaths = new ArrayList<>();
+        ArrayList<T> initialPath = new ArrayList<>();
+        initialPath.add(v);
+        possiblePaths(graph,w,initialPath,listOfPaths);
+        ArrayList<T> maxSize=new ArrayList<>();
+        for (ArrayList<T> path:listOfPaths) {
+            if(path.size()>maxSize.size()) maxSize=path;
+        }
+        ArrayList<T> minSize=maxSize;
+        for (ArrayList<T> path:listOfPaths) {
+            if(path.size()<minSize.size()) minSize= path;
+        }
+        return minSize;
+    }
+
+    private void possiblePaths(Graph<T> graph,T w,ArrayList<T> path,ArrayList<ArrayList<T>> possiblePaths){
+        List<T> adjacent = graph.getAdjacencyList(path.get(path.size()-1));
+        for (T adj : adjacent) {
+            if(adj.equals(w)){
+                path.add(w);
+                possiblePaths.add(path);
+            }
+            else if(!path.contains(adj)){
+                ArrayList<T> newPath = new ArrayList<>(path);
+                newPath.add(adj);
+                possiblePaths(graph,w,newPath,possiblePaths);
+            }
+        }
     }
 
     @Override
     public int exercise_h(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        List<T> vertex = graph.getVertexes();
+        if(vertex.size()==0) return 0;
+        else{
+            return h(graph,graph.getVertexes().get(0),1);
+        }
+    }
+
+    private int h(Graph<T> graph,T v,int groups){
+        HashMap<T,Boolean> visited=new HashMap<>();
+        for (T vertex: graph.getVertexes()) {
+            visited.put(vertex,false);
+        }
+        Stack<T> stack = new Stack<>();
+        stack.push(v);
+        while (visited.containsValue(Boolean.FALSE)){
+            T vertex=null;
+            if(stack.isEmpty()) {
+                for (T value : visited.keySet()) {
+                    if (!visited.get(value)){
+                        vertex = value;
+                        groups++;
+                        break;
+                    }
+                }
+            }
+            else vertex= stack.pop();
+            visited.replace(vertex,Boolean.TRUE);
+            for (T adj: graph.getAdjacencyList(vertex)) {
+                List<T> test= graph.getAdjacencyList(adj);
+                if(!visited.get(adj)&&!stack.contains(adj)) stack.push(adj);
+            }
+        }
+        return groups;
     }
 
     @Override
